@@ -1,17 +1,26 @@
 //상태는 createStore() 안에 있다. 
-const createStore=()=>{
+//상태를 담을 변수 선언
+//콜백함수를 담을 배열 선언
+//send함수 구현 - 파라미터 action
+//구독발행모델-subscribe 
+//subscribe 를 통해서
+//getState함수 통해서 state값을 반환받음
+//return {send, subscribe, getState}
+const createStore=()=>{  //배치 위치는 index.js 배치 - store생성
     let state;  //상태를 담아두는 저장소
     //함수를 담아두는 배열 선언
     let handlers=[]
-    //상태를 바꾸는 일을 함 - send함수가
+    //상태를 바꾸는 일을 함 - useSelector 훅
     const send=(action)=>{
         console.log("send호출")
         //새로운 객체가 만들어 진다. 
         state = worker(state, action);
-        handlers.forEach(handler=>handler())
+        //나에게 구독신청한 사람들에게 모두 알림 
+        handlers.forEach(handler=>handler()) //전달받은 함수를 호출해줘 
     };
 
-    const subscribe=(handler)=>{
+    const subscribe=(handler)=>{ //useDispatch 훅
+        //콜백함수
         handlers.push(handler);
     }
 
@@ -45,7 +54,7 @@ const worker=(state={count:0}, action)=>{     //state가 undefined 되는 것 �
     return {...state, count : state.count+1}  //Deep Copy
 }
 //자바 스크립트에서는 함수도 파라미터로 넘길 수 있다. 
-const store=createStore(worker)
+const store=createStore(worker)   //index.js에서 생성할 것임   -props대신 중앙에서 즉시 한 번에 가져다 사용 
 //subscribe함수 호출 시 파라미터로 콜백함수를 넘김 
 store.subscribe(function(){
     console.log(store.getState());
@@ -53,6 +62,8 @@ store.subscribe(function(){
 
 
 //action의 내용은 send에서 만듦
+//사용자가 버튼을 클릭했을 때 시그널 발생함 - type 정해서 value를 store에 전달함
+//store 가 받아서 전변으로 관리됨 - G컴포넌트에서 즉시 바로 사용 가능함
 store.send({type:'increase'});  //시그널 주기 - action
 store.send({type:'increase'});
 store.send({type:'decrease'});
