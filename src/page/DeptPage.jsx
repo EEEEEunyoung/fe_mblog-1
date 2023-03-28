@@ -8,6 +8,23 @@ import BlogHeader from "../include/BlogHeader";
 import { deptInsertDB, deptListDB } from "../service/dbLogic";
 import imageUploader from "../service/imageUploader";
 import { validateDname } from "../service/validateLogic";
+import styled from "styled-components";
+import BlogFooter from "../include/BlogFooter";
+
+
+const DivUploadImg=styled.div`
+overflow: hidden;
+margin: 10px auto;
+display: flex;
+width: 200px;
+height: 250px;
+`
+const Img=styled.img`
+width: 100%;
+height: 100%;
+object-fit: cover;
+`
+
 
 const DeptPage = ({ imageUploader }) => {
   //화면 전환 시, 가급적 전체 페이지 리로딩을 하지 않음
@@ -275,13 +292,12 @@ if(res.data){
                 onChange={imgChange}
               />
             </Form.Group>
-            <div id="uploadImg">
-              <img
-                className="thumbNail"
+            <DivUploadImg  id="uploadImg">
+              <Img
                 src="http://via.placeholder.com/200X250"
                 alt="미리보기"
-              />
-            </div>
+                />
+            </DivUploadImg>
           </div>
         </Modal.Body>
         <Modal.Footer>
@@ -294,6 +310,7 @@ if(res.data){
         </Modal.Footer>
       </Modal>
       {/* ========================== [[ 부서등록 Modal ]] ========================== */}
+    <BlogFooter></BlogFooter>
     </>
   );
 };

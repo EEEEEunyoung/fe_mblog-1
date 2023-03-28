@@ -1,19 +1,27 @@
 import React from 'react'
+import { Button } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 import { ContainerDiv, FormDiv, HeaderDiv } from '../components/styles/FormStyle'
 import BlogHeader from '../include/BlogHeader'
 import KakaoMap from '../kakao/KakaoMap'
 
 
 const HomePage = () => {
+  const navigate = useNavigate()
+    const handleLogin=()=>{
+      console.log('로그인요청')
+      navigate("/login")
+      
+    }
   return (
     <>
         <ContainerDiv>
+       <BlogHeader />
       <HeaderDiv>
       <h1 style={{maginLeft:"10px"}}>홈페이지</h1>     
-       <BlogHeader />
+      <Button onClick={handleLogin}>로그인</Button>
       </HeaderDiv>
-
-<FormDiv style={{}}>
+<FormDiv style={{textAlign:'center'}}>
 <div>이벤트존</div>
 <hr style={{height:"2px"}}/>
 <div>추천수업존</div>
