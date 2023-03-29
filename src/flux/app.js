@@ -59,7 +59,7 @@ case 'increase':
 //변경되고 읽어낸 정보는 return으로 처리했다. 
 //store를 모아서 상태의 묶음을 넘겨 줄거야.
 const store = createStore(worker);
-this.subscribe(()=>{
+store.subscribe(()=>{
    console.log(store.getState())
 })
 //아래와 같이 store에 내부함수를 외부에서 호출하려면 return 에 반드시 등록할 것

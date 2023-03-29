@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { json, useNavigate } from 'react-router-dom';
 import { jsonMemberListDB, memberInsertDB } from '../../service/dbLogic';
 import { linkEmail, onAuthChange, signupEmail } from '../../service/authLogic';
 import { checkPassword, validateBirthdate, validateEmail, validateHp, validateName, validateNickname, validatePassword } from '../../service/validateLogic';
@@ -52,7 +52,7 @@ const KhSignup = ({update, authLogic}) => {
     name: "",
     birthday: "",
     hp: "",
-    nickname: "",
+    nickname: undefined,
     gender: "없음"
   });
 
@@ -176,8 +176,12 @@ params = {MEM_EMAIL:memInfo[key], type: 'overlap'}
 //0:{MEM_UID: 'kiwi', MEM_NAME:'강감찬'}
 const data = JSON.stringify(response.data)
 const jsonDoc = JSON.parse(data)
-console.log(jsonDoc[0].MEM_NAME)
-    //닉네임이 존재할 때
+if(jsonDoc){
+  console.log(jsonDoc[0].MEM_NAME)
+}else{
+  console.log('입력한 닉네임은 존재하지 않습니다.')
+}
+//닉네임이 존재할 때
 if(response.data){
 
 }

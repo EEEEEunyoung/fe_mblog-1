@@ -1,4 +1,13 @@
-import {signInWithPopup, getAuth, GoogleAuthProvider, createUserWithEmailAndPassword, EmailAuthProvider, sendEmailVerification } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  getAuth,
+  createUserWithEmailAndPassword,
+  EmailAuthProvider,
+  signInWithPopup,
+  sendEmailVerification,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
+
 //import firebase from 'firebase';
 
 class AuthLogic {
@@ -26,8 +35,8 @@ class AuthLogic {
     const authProvider = this.getProvider(providerName);
     //제공자의 정보이면 팝업을 띄워서 로그인을 진행하도록 유도함
     return signInWithPopup(this.firebaseAuth, authProvider);
-  }
-  //로그아웃 버튼 클릭시 호출하기
+  } //end of login
+  /////////////////////로그아웃 버튼 클릭시 호출하기/////////////////////////
   logout() {
     this.firebaseAuth.signOut();
   }
@@ -38,7 +47,12 @@ class AuthLogic {
       //사용자가 바뀔 때마다
       onUserChanged(user);
     });
-  }
+  }  //end of logout
+
+
+
+
+
 
   getProvider(providerName) {
     switch (providerName) {
@@ -134,3 +148,23 @@ export const logout=(auth) => {
           .catch((e) => reject(e + ": 인증메일 오류입니다."));
       });
     };
+
+    export const loginEmail=(auth, user)=>{
+      console.log(auth)
+      console.log(user.email + user.password)
+      return new Promise((resolve, reject)=>{
+        signInWithEmailAndPassword(auth, user.email, user.password)
+  .then((userCredential) => {
+    // Signed in
+    const user = userCredential.user;
+    console.log(user)
+    resolve(userCredential)
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(errorCode+","+errorMessage)
+  });
+ })
+ }
+
