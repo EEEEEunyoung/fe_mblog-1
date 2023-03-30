@@ -57,21 +57,23 @@ const navigate = useNavigate();     //리액트 a 말고 네비게이트나 링�
         console.log(result.user.uid)
         window.sessionStorage.setItem('userid', result.user.uid)
         window.localStorage.setItem('userid', result.user.uid)
-        window.localStorage.setItem('member',JSON.stringify({mem_id:'test', mem_pw:'123'}))
+        window.localStorage.setItem('member',JSON.stringify({mem_uid:'test', mem_pw:'123'}))
+//현재 내가 바라보는 URL /login
+//문제제기 - 세션스토리지가 유지되나요?
+navigate("/home")
 
     } catch (error) {
 
         
     }
-    navigate('/home')
   }
   const loginG = async () => {
     // 구글 로그인 구현
     try {
       const result = await loginGoogle(authLogic.getUserAuth(),authLogic.getGoogleAuthProvider())
       console.log(result.data)
-      /* navigate("/")
-      window.location.reload() */
+      navigate("/home")
+      window.location.reload() 
     } catch (error) {
       console.log("로그인오류입니다.")
     }
@@ -102,7 +104,7 @@ const navigate = useNavigate();     //리액트 a 말고 네비게이트나 링�
         <GoogleButton type="button" onClick={()=>{loginG();}}>
           <i className= "fab fa-google-plus-g" style={{color: "red", fontSize: "18px"}}></i>&nbsp;&nbsp;Google 로그인
         </GoogleButton>
-        <MyP style={{marginTop:"30px"}}>신규 사용자이신가요?&nbsp;<Link to="/login/signup" className="text-decoration-none" style={{color: "blue"}}>계정 만들기</Link></MyP>
+        <MyP style={{marginTop:"30px"}}>신규 사용자이신가요?&nbsp;<Link to="/auth/signup" className="text-decoration-none" style={{color: "blue"}}>계정 만들기</Link></MyP>
         <MyP>이메일를 잊으셨나요?&nbsp;<Link to="/login/findEmail" className="text-decoration-none" style={{color: "blue"}}>이메일 찾기</Link></MyP>
         <MyP>비밀번호를 잊으셨나요?&nbsp;<Link to="/login/resetPwd" className="text-decoration-none" style={{color: "blue"}}>비밀번호 변경</Link></MyP>
       </LoginForm>

@@ -10,6 +10,7 @@ import rootReducer from './redux/rootReducer';
 import { Provider } from 'react-redux';
 import AuthLogic from './service/authLogic';
 import firebaseApp from './service/firebase';
+import "react-quill/dist/quill.snow.css";
 import { setAuth } from './redux/userAuth/action';
 
 //리덕스 적용하기

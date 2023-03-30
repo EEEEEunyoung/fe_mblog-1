@@ -6,11 +6,13 @@ import {
   signInWithPopup,
   sendEmailVerification,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
 } from 'firebase/auth';
 
 //import firebase from 'firebase';
 
-class AuthLogic {
+class AuthLogic {   //클래스 선언
+  //생성자 - 전변 초기화 
   //생성자 정의 - 자바와는 다르게 선언없이 초기화 가능
   //firebaseAuth변수명, googleProvider변수명 - 전역변수
   constructor() {
@@ -70,12 +72,14 @@ class AuthLogic {
 export default AuthLogic;
 
 
-
+//사용자가 변경되는지 지속적으로 체크하여 변경될 때 마다 호출 됨 - 구글 서버에서 제공하는 서비스
+//콜백함수
 export const onAuthChange=(auth)=>{
-  return new Promise((resolve)=>{
-auth.onAuthStateChanged((user) => {
+  return new Promise((resolve)=>{  //비동기 서비스 구현
+    //사용자가 바뀌었을 때 콜백함수를 받아서 
+auth.onAuthStateChanged((user) => {  //파라미터 주입
   //사용자가 바뀔 때마다 콜백함수를 받아서
-resolve(user) 
+resolve(user)    //내보내지는 정보 - View계층 - App.jsx
 })
 })   //end of Promise
 } //end of onAuthChange
@@ -85,6 +89,8 @@ resolve(user)
 export const logout=(auth) => {
   return new Promise((resolve, reject) =>{
       auth.signOut().catch(e=>reject(e+'로그아웃 오류입니다.'));
+      //우리 회사가 제공하는 서비스를 누리기 위해서는 구글에서 제공하는 기본 정보 외에 
+      //추가로 필요한 정보 있다 - 테이블 설계 - 세션
       //로그인 성공시 세션 스토리지에 담아 둔 정보를 모두 지운다. 
       sessionStorage.clear();
     //서비스를 더 이상 사용하지 않는 경우이므로 돌려줄 값은 없다. 
@@ -92,18 +98,23 @@ export const logout=(auth) => {
   });
 }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
  
-  
+ 
+
+
  export const  loginGoogle=(auth, googleProvider) => {
     return new Promise((resolve, reject)=>{
-      signInWithPopup(auth, googleProvider).then(
-      (result)=>{
+      signInWithPopup(auth, googleProvider)  //팝업 열림 
+      .then((result)=>{
+        //콜백이 진행됨
         const user = result.user;    //구글에 등록되어 있는 profile 정보가 담겨 있음 
         console.log(user)
         resolve(user)
       }).catch(e=>reject(e))
       })
     }
-  
+
+    
+
 
     export const signupEmail = (auth, user) => {
       return new Promise((resolve, reject) => {
@@ -149,6 +160,10 @@ export const logout=(auth) => {
       });
     };
 
+
+    //이메일과 비번으로 회원가입 신청을 한 경우 로그인 처리하는 함수임
+    //auth - AuthLogic 클래스 생성자의 getAuth() - auth
+    //두번쨰와 세번째 email, password
     export const loginEmail=(auth, user)=>{
       console.log(auth)
       console.log(user.email + user.password)
@@ -166,5 +181,17 @@ export const logout=(auth) => {
     console.log(errorCode+","+errorMessage)
   });
  })
+ }
+
+
+ export const sendResetpwEmail=(auth, email)=>{
+  console.log(email);
+  return new Promise((resolve, reject)=>{
+    sendPasswordResetEmail(auth, email).then(()=>{
+      resolve('비밀번호 변경 이메일을 보냈습니다.')
+
+    })
+    .catch((e)=>reject(e))   //에러
+  })
  }
 

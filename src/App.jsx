@@ -17,6 +17,9 @@ import Prac from './member/Prac';
 import KhLoginPage from './components/auth/KhLoginPage';
 import { onAuthChange } from './service/authLogic';
 import { jsonMemberListDB } from './service/dbLogic';
+import EmailVerifiedPage from './components/auth/EmailVerifiedPage';
+import FindEmailPage from './components/auth/FindEmailPage';
+import ResetPwdPage from './components/auth/ResetPwdPage';
 
 function App({authLogic, imageUploader}) {
   const navigate = useNavigate()
@@ -33,10 +36,13 @@ function App({authLogic, imageUploader}) {
       //구글 로그인으로 사용자 정보를 가지고 있을 때 
       //user정보가 있으면 sessionStorage에 담는다. - email 
       if(user){
+        console.log('user정보가 있을 때')
         ssg.setItem('email', user.email)
-        const res = await jsonMemberListDB({MEM_ID: user.uid, type:'auth'})
+        const res = await jsonMemberListDB({mem_uid: user.uid, type:'auth'})
         //오라클 서버의 회원집합에 uid가 존재하면 - 세션 스토리지에 값을 담자.  
-        if(res.data){
+        console.log(res.data)
+        //오라클 서버의 회워집합에 uid가 존재하면 - 세션 스토리지에 값을 담자
+        if(res.data!==0){  //스프링부트 - RestMemberController - memberList
           const temp = JSON.stringify(res.data)
           const jsonDoc = JSON.parse(temp)
         ssg.setItem('nickname', jsonDoc[0].MEM_NICKNAME)
@@ -47,10 +53,16 @@ function App({authLogic, imageUploader}) {
         return //랜더링 종료 
         }
         //구글 로그인을 했지만 false 일 때, 
+
+        //r구글계정이 아닌 다른 계정으로 로그인을 시도했을 땐 suer.emailVerified가 없다 - 그렇다면 undefined 이겠지!
+        if(!user.emailVerified){      
+          navigate('./auth/emailVerified')
+        }
         //if(){}
         //오라클 서버의 회원집합에 uid가 존재하지 않으면, 
       else{
-
+        console.log('해당 구글 계정은 회원가입 대상입니다. 회원가입 부탁드립니다.')
+      navigate('/auth/signup')
       }
       }
       //사용자 정보가 없을 때 
@@ -62,7 +74,7 @@ function App({authLogic, imageUploader}) {
         }  
       } //end of else
     }
-
+asyncDB()
   },[dispatch])
   return (
 <>
@@ -83,6 +95,9 @@ function App({authLogic, imageUploader}) {
     <Route path='/login/login' exact={true} element={<LoginPage />} />
     <Route path='/login' exact={true} element={<KhLoginPage authLogic={authLogic}/>} />
     <Route path='/prac' exact={true} element={<Prac />} />
+    <Route path='/auth/emailVerified' exact={true} element={<EmailVerifiedPage  authLogic={authLogic} />} />
+    <Route path='/auth/findEmail' exact={true} element={<FindEmailPage />} />
+    <Route path='/auth/resetPwd' exact={true} element={<ResetPwdPage />} />
 
     </Routes>
 

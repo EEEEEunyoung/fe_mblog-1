@@ -274,10 +274,11 @@ else{
         MEM_BIRTHDAY: birthday,
         MEM_TEL: memInfo.hp,
         MEM_NICKNAME: memInfo.nickname,
-        MEM_ZIPCODE: post.postNum,
-        MEM_ADDR: post.post,
-        MEM_ADDR_DTL: post.postDetail,
-        MEM_AUTH: (type==='member'?1:2),
+        MEM_ZIPCODE: post.zipcode,
+        MEM_ADDR: post.addr,
+        MEM_ADDR_DTL: post.addrDetail,
+        MEM_STATUS:0,
+        MEM_AUTH: (type==='member'?'member':'teacher'),
         MEM_GENDER: memInfo.gender
       }
       console.log(datas)
@@ -287,7 +288,7 @@ else{
       return "DB 오류: 관리자에게 연락바랍니다.";
     }
       sessionStorage.clear();
-      navigate('/');
+      navigate('/home');
       return "회원가입되었습니다. 감사합니다.";
       
     } catch (error) {
