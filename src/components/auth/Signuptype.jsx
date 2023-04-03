@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+
 const TypeForm = styled.div`
   display: flex; 
   width: 80%;
@@ -13,6 +14,7 @@ const TypeForm = styled.div`
   margin: 150px 0px 150px 0px;
   
 `;
+
 const TypeDiv = styled.div`
   display: flex; 
   flex-direction: column; 
@@ -26,8 +28,12 @@ const TypeDiv = styled.div`
     background-color: lightgray;
   }
 `;
+
+
 const Signuptype = () => {
+
   const navigate = useNavigate();
+
   return (
     <div style={{display: 'flex', justifyContent: 'center'}}>
       <TypeForm>
@@ -44,4 +50,5 @@ const Signuptype = () => {
     </div>
   );
 };
+
 export default Signuptype;

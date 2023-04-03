@@ -7,26 +7,25 @@ import './loginpage.css'
 
 const LoginPage = () => {
     const navigate = useNavigate()
-    //디스패치는 One-Way 바인딩에서 액션을 스토에서 전달할 때 디스패치 사용함
+    //One-Way 바인딩에서 액션을 스토어에 전달할 때 디스패치 사용함
     const dispatch = useDispatch()
-    //store에 초기화 된 state 안에 담긴 data 꺼내올 때  (useSelector 사용)
-    const userAuth = useSelector(store=>store.userAuth)
-    const auth = useSelector((store)=>store.userAuth.auth)
+    //store에 초기화된  state 안에 담긴 data 꺼내올때
+    const userAuth = useSelector(store => store.userAuth)
+    const auth = useSelector((store) => store.userAuth.auth)
     console.log(auth)
-    const googleProvider = useSelector((store)=>store.userAuth.googleProvider)
+    const googleProvider = useSelector((store) => store.userAuth.googleProvider)
     console.log(googleProvider)
     const handleGoogle = async (event) => {
-        event.preventDefault();
-        try {
-            const result = await loginGoogle(auth, googleProvider)
-            console.log(result.uid)
-            window.sessionStorage.setItem('userId', result.uid)
-            navigate("/home")
-        } catch (error) {
-         dispatch(setToastMsg(error+':로그인오류입니다.'))//[object, object] -> JSON.stringify() 
-            console.log(error)
-        }
-      } //end of handleGoogle    
+      event.preventDefault()
+      try {
+        const result = await loginGoogle(auth, googleProvider)
+        console.log(result.uid)
+        window.sessionStorage.setItem('userId', result.uid)
+        navigate('/')
+      } catch (error) {
+        dispatch(setToastMsg(error+' : 로그인 오류입니다.'))//[object, object] -> JSON.stringify()
+      }
+    } //end of handleGoogle    
   return (
     <>
     <div className="bg"></div>
@@ -55,4 +54,5 @@ const LoginPage = () => {
     </>
   )
 }
+
 export default LoginPage

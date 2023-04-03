@@ -3,9 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setToastMsg } from "../../redux/toastStatus/action";
 import { sendResetpwEmail } from "../../service/authLogic";
-import { jsonMemberListDB, memberListDB } from "../../service/dbLogic";
+import { memberListDB } from "../../service/dbLogic";
 import { LoginForm, MyH1, MyInput, MyLabel, SubmitButton } from "../styles/FormStyle";
+
 const ResetPwdPage = ({authLogic}) => {
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userAuth = useSelector(state => state.userAuth);
@@ -14,6 +16,7 @@ const ResetPwdPage = ({authLogic}) => {
     bgColor: 'rgb(175, 210, 244)',
     hover: false
   });
+
   const toggleHover = () => {
     if(submitBtn.hover){
       setSubmitBtn({...submitBtn, hover: false, bgColor: 'rgb(105, 175, 245)'});
@@ -21,11 +24,13 @@ const ResetPwdPage = ({authLogic}) => {
       setSubmitBtn({...submitBtn, hover: true, bgColor: 'rgb(72, 145, 218)'});
     }
   }
+
   const [memInfo, setMemInfo] = useState({
     name: "",
     hp: "",
     email: ""
   });
+
   useEffect(()=> {
     if(memInfo.email&&memInfo.hp&&memInfo.name){ 
       setSubmitBtn({disabled:false, bgColor: 'rgb(105, 175, 245)'});
@@ -33,11 +38,14 @@ const ResetPwdPage = ({authLogic}) => {
       setSubmitBtn({disabled:true, bgColor: 'rgb(175, 210, 244)'});
     }
   },[memInfo]);
+
+
   const changeMemInfo = (e) => {
     const id = e.currentTarget.id;
     const value = e.target.value;
     setMemInfo({...memInfo, [id]: value});
   }
+
   const send = async () => {
     console.log('비번찾기메일전');
     const member = {
@@ -47,7 +55,7 @@ const ResetPwdPage = ({authLogic}) => {
       type : 'overlap',
     }
     console.log(member);
-    const res = await jsonMemberListDB(member);
+    const res = await memberListDB(member);
     console.log(res.data);
     const temp = JSON.stringify(res.data)
     const jsonDoc = JSON.parse(temp)
@@ -63,7 +71,11 @@ const ResetPwdPage = ({authLogic}) => {
     } catch (error) {
       dispatch(setToastMsg(error+": 메일전송 오류입니다."));
     }
+
   }
+
+
+
   return (
     <LoginForm>
       <MyH1>비밀번호 변경</MyH1>
@@ -88,4 +100,5 @@ const ResetPwdPage = ({authLogic}) => {
     </LoginForm>
   );
 };
+
 export default ResetPwdPage;

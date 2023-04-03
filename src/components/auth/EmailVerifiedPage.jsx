@@ -2,7 +2,9 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { logout, sendEmail } from '../../service/authLogic';
 import { MyButton, SignupForm } from '../styles/FormStyle';
+
 const EmailVerifiedPage = ({authLogic}) => {
+
   const navigate = useNavigate();
   const auth = authLogic.getUserAuth();
   const send = async() => {
@@ -10,10 +12,13 @@ const EmailVerifiedPage = ({authLogic}) => {
     const msg = await sendEmail(auth.currentUser);
     console.log(msg);
   }
+
   const out = async() => {
     await logout(auth);
     navigate('/');
   }
+
+
   return (
     <>
       <SignupForm style={{marginTop : '100px'}}>
@@ -30,4 +35,5 @@ const EmailVerifiedPage = ({authLogic}) => {
     </>
   );
 };
+
 export default EmailVerifiedPage;

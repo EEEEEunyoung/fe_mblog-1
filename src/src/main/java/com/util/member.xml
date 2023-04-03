@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemberMapper">
+<!-- 
+사용자가 입력한 값을 받아올 때 parameterType에 해당 타입을 적는다
+만일 사용자 정의 클래스라면(예: MemberVO)
+패키지를 포함하는 full name으로 작성함
+ -->
+	<!-- <select id="getMemberList" parameterType="com.vo.MemberVO" resultType="map"> -->
+	<!-- <select id="getMemberList" parameterType="int" resultType="map"> -->
+	<!-- <select id="getMemberList" parameterType="java.lang.Integer" resultType="map"> -->
+	<select id="getMemberList" parameterType="java.util.HashMap" resultType="map">
+		SELECT mem_no, mem_id, mem_name FROM member    
+		<where>
+			<if test='mem_no > 0'>
+			 	mem_no = #{mem_no}
+			 </if>
+		</where>
+	</select>	  	
+	<select id="myBatisMemberList2" parameterType="java.util.HashMap" resultType="com.vo.MemberVO">
+		SELECT mem_no, mem_id, mem_name FROM member    
+		<where>
+			<if test='mem_no > 0'>
+			 	mem_no = #{mem_no}
+			 </if>
+		</where>
+		ORDER BY mem_no desc
+	</select>	  	
+</mapper>

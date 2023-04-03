@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { setToastFalse } from '../redux/toastStatus/action';
 import './toast.css';
+
 const ToastDiv = styled.div`
   position: fixed;
   top: 50%;
@@ -20,9 +21,12 @@ const ToastDiv = styled.div`
   border-radius: 4px;
   border: 1px solid #000000;
 `
+
 const Toast = () => {
+
   const toastStatus = useSelector(state => state.toastStatus);
   const dispatch = useDispatch();
+
   
   useEffect(() => {
     if (toastStatus.status) {
@@ -30,10 +34,13 @@ const Toast = () => {
         dispatch(setToastFalse()); 
       }, 1500)
     }
+
   }, [toastStatus.status, dispatch]);
   
+
   return (
     <ToastDiv>{JSON.stringify(toastStatus.msg)}</ToastDiv>
   );
 };
+
 export default Toast;

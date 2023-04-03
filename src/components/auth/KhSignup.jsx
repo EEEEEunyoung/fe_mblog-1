@@ -2,13 +2,13 @@
 import React, { useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { json, useNavigate } from 'react-router-dom';
-import { jsonMemberListDB, memberInsertDB } from '../../service/dbLogic';
+import { useNavigate } from 'react-router-dom';
+import { memberInsertDB, memberListDB } from '../../service/dbLogic';
 import { linkEmail, onAuthChange, signupEmail } from '../../service/authLogic';
 import { checkPassword, validateBirthdate, validateEmail, validateHp, validateName, validateNickname, validatePassword } from '../../service/validateLogic';
-import { SignupForm, MyH1, MyInput, MyLabel,  MyLabelAb, SubmitButton, MyButton, PwEye, } from '../styles/FormStyle';
+import { SignupForm, MyH1, MyInput, MyLabel,  MyLabelAb, SubmitButton, MyButton, PwEye, WarningButton} from '../styles/FormStyle';
 
-const KhSignup = ({update, authLogic}) => {
+const KhSignup = ({authLogic}) => {
   const auth = authLogic.getUserAuth();
   const userAuth = useSelector(state => state.userAuth);
   //window.location.search는 ?뒤의 쿼리스트링을 가져옴
@@ -52,7 +52,7 @@ const KhSignup = ({update, authLogic}) => {
     name: "",
     birthday: "",
     hp: "",
-    nickname: undefined,
+    nickname: null,
     gender: "없음"
   });
 
@@ -162,34 +162,35 @@ const KhSignup = ({update, authLogic}) => {
   //닉네임 중복확인 
   const overlap = async(key) => {
     console.log('닉네임 중복확인' + key);
-    let params;
-    if(key === 'email'){
-params = {MEM_EMAIL:memInfo[key], type: 'overlap'}        
-    }else{
-        params = {MEM_NICKNAME:memInfo[key], type: 'overlap'}        
-    }
-    console.log(params)
-    let response = {data: 0}
-    response = await jsonMemberListDB(params);
-    console.log(response.data)
-//Array(1)
-//0:{MEM_UID: 'kiwi', MEM_NAME:'강감찬'}
-const data = JSON.stringify(response.data)
-const jsonDoc = JSON.parse(data)
-if(jsonDoc){
-  console.log(jsonDoc[0].MEM_NAME)
-}else{
-  console.log('입력한 닉네임은 존재하지 않습니다.')
-}
-//닉네임이 존재할 때
-if(response.data){
+	let params;
+	if(key === 'email'){
+		params = { MEM_EMAIL: memInfo[key], type: 'overlap' }
+	}else{
+		params = { MEM_NICKNAME: memInfo[key], type: 'overlap' }
+	}
+	console.log(params)
+	let response = {data:  0}
+	response = await memberListDB(params);
+	console.log(response.data) 
+	//Array(1)
+	//0: {MEM_UID: 'kiwi', MEM_NAME:'강감찬'}
+	const data = JSON.stringify(response.data)
+	const jsonDoc = JSON.parse(data)
+  if(jsonDoc){
+    console.log(jsonDoc[0].MEM_NAME)
+  }else{
+    console.log('입력한 닉네임은 존재하지 않습니다.')
+  }
+	//닉네임이 존재할 때
+	if(response.data){
 
-}
-//닉네임이 없을 때 
-else{
+	}
+	//닉네임이 없을 때
+	else{
 
-    }
-} //end of overlap
+	}
+
+  }//end of overlap 
 
   const validate = (key, e) => {
     let result;
@@ -210,7 +211,7 @@ else{
     } 
     setComment({...comment, [key]: result}); 
     if(result){
-      if(result){
+      if(result===' '){
         setStar({...star, [key]:""});
       } else {
         setStar({...star, [key]:"*"});
@@ -231,7 +232,6 @@ else{
         }
         console.log(data);
         console.log(addr);
-        console.log(post.postNum);
         setPost({...post, zipcode:data.zonecode, addr:addr}) ;
         document.getElementById("zipcode").value = data.zonecode;
         document.getElementById("addr").value = addr;
@@ -277,7 +277,7 @@ else{
         MEM_ZIPCODE: post.zipcode,
         MEM_ADDR: post.addr,
         MEM_ADDR_DTL: post.addrDetail,
-        MEM_STATUS:0,
+        MEM_STATUS: 0,
         MEM_AUTH: (type==='member'?'member':'teacher'),
         MEM_GENDER: memInfo.gender
       }
@@ -288,7 +288,7 @@ else{
       return "DB 오류: 관리자에게 연락바랍니다.";
     }
       sessionStorage.clear();
-      navigate('/home');
+      navigate('/');
       return "회원가입되었습니다. 감사합니다.";
       
     } catch (error) {
@@ -404,7 +404,6 @@ else{
             onClick={handleSignup} onMouseEnter={toggleHover} onMouseLeave={toggleHover}>
               {'가입하기'}
             </SubmitButton>
-
         </SignupForm>
       </div>
     </div>
