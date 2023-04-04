@@ -44,21 +44,18 @@ const KhQnAWritePage = ({authLogic}) => {  //props로 넘어온 값 즉시 구�
 
   const qnaInsert = async() => {
     console.log('qnaInsert');
-    console.log(secret)
-    console.log(typeof secret)
-    const board ={
-        qna_title:title,
-        qna_content:content,
-        qna_secret:(secret?'true':'false'),
-        qna_type:tTitle,
-        //mem_no:
-    }  //사용자 입력한 값 넘기기 - @RequestBody로 처리됨
-    const res = await qnaInsertDB(board)
-    //insert here
-    console.log(res.data)
-    //성공시 페이지 이동처리하기
-    //window.location.replace('/qna/list?page=1')
-} 
+    console.log(secret); // true, 0아닌 것모두
+    console.log(typeof secret); //boolean타입출력
+    const board = {
+      qna_title: title,
+      qna_content: content,
+      qna_secret: (secret?"true":"false"),
+      qna_type: tTitle,
+      mem_no: sessionStorage.getItem("no"),
+    }
+    const res = await qnaInsertDB(board);
+    window.location.replace("/qna/list?page=1")
+  }
   return (
     <>
       <BlogHeader authLogic={authLogic} />

@@ -11,7 +11,7 @@ import { BButton, ContainerDiv, FormDiv, HeaderDiv } from '../styles/FormStyle';
 import KhMyFilter from './KhMyFilter';
 import KhSearchBar from './KhSearchBar';
 
-const KhQnAListPage = ({authLogic}) => {
+const KhQnAListPage = ({authLogic, bno}) => {
   //페이징 처리시에 현재 내가 바라보는 페이지 정보 담기
   let page = 1
   //화면 전환 시 필요한 훅
@@ -64,7 +64,9 @@ const KhQnAListPage = ({authLogic}) => {
           mem_name:item.MEM_NAME,
           qna_date:item.QNA_DATE,
           qna_hit:item.QNA_HIT,
-          qna_secret:item.QNA_SECRET,
+          qna_secret:JSON.parse(item.QNA_SECRET),  //"false" -> false가 됨
+          file:item.FILE_NAME,
+          comment:item.COMM_NO
         }
 list.push(obj)
       })
@@ -72,11 +74,15 @@ list.push(obj)
     }
     qnaList();
   },[setListBody, setTTitle,  page, search]);
-
   //listItemsElements 클릭이벤트 처리시 사용
   const getAuth = (listItem) => {
     console.log(listItem);
-
+    console.log(listItem.qna_secret);
+if(listItem.qna_secret===false){
+  navigate(`qna/detail?${listItem.qna_bno}`)
+}else{
+console.log('권한이 없습니다. 비공개입니다. ')
+    }
   }
 
 

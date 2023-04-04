@@ -104,7 +104,7 @@ function App({ authLogic, imageUploader }) {
           <Route path='/profile' exact={true} element={<Profile />} />
 
  <Route path='/qna/list' element={<KhQnAListPage  />} />
- <Route path='/qna/detail/*'  element={<KhQnADetailPage  />} />
+ <Route path='/qna/list/qna/detail/'  element={<KhQnADetailPage  />} />
  <Route path='/qna/write' exact={true}  element={<KhQnAWritePage  />} />
  <Route path='/qna/update/:bno' exact={true}  element={<KhQnAUpdatePage  />} />
         
